@@ -1,0 +1,18 @@
+{% load static %}
+{% load plotly_dash %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Dashboard</title>
+    {% plotly_header %}
+    {% plotly_footer %}
+</head>
+<body>
+    <h1>Home Page</h1>
+    <div class="{% plotly_class name='SimpleExample' %} card" style="height: 100%; width: 100%">
+        {% plotly_app name='SimpleExample' ratio=0.45 %}
+    </div>
+    <br>
+</body>
+</html>
