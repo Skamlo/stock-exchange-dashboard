@@ -1,0 +1,47 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+env/
+envs
+envs/
+.venv/
+
+# Environment variables and secrets
+.env
+*.env
+
+# Django-specific files
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+*.db
+
+# Static/media (only if served from host or CDN)
+staticfiles/
+media/
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker and build artifacts
+Dockerfile
+docker-compose.yml
+
+# Tests, docs, misc
+tests/
+docs/
+*.md
