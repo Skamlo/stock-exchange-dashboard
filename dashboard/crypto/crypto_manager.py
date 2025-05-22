@@ -12,8 +12,8 @@ class CryptoManager:
     def __init__(self):
         self._client = Client()
         self.selected_coins = ["BTC", "ETH", "XRP", "SOL", "DOGE"]
-        self.coinbase_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
-        self.coinbase_headers = {
+        self.coinmarketcap_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
+        self.coinmarketcap_headers = {
             "Accepts": "application/json",
             "X-CMC_PRO_API_KEY": API_KEY,
         }
@@ -118,7 +118,7 @@ class CryptoManager:
             "symbol": ",".join(coin),
         }
 
-        response = requests.get(self.coinbase_url, headers=self.coinbase_headers, params=params)
+        response = requests.get(self.coinmarketcap_url, headers=self.coinmarketcap_headers, params=params)
         data = response.json()
 
         if response.status_code != 200 or "data" not in data:
