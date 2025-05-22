@@ -1,11 +1,32 @@
 from binance.client import Client
 from typing import List, Union
 import requests
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
-class BinanceManager:
+API_KEY = os.getenv("COINMARKETCAP_API_KEY")
+
+class CryptoManager:
     def __init__(self):
         self._client = Client()
+        self.selected_coins = ["BTC", "ETH", "XRP", "SOL", "DOGE"]
+        self.coinbase_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
+        self.coinbase_headers = {
+            "Accepts": "application/json",
+            "X-CMC_PRO_API_KEY": API_KEY,
+        }
+
+
+    def get_selected_coins(self) -> List[str]:
+        """
+        Method is for selecting list of coins.
+
+        Returns:
+            List[str]: list of coins names
+        """
+        return self.selected_coins
 
     def get_coins(self) -> List[str]:
         """
@@ -90,20 +111,21 @@ class BinanceManager:
         return {}
 
     def get_coin_market_cap(self, coin: Union[str, List[str]]) -> Union[float, List[float]]:
-        """Estimates market cap = price * volume. Only for USDT pairs as approximation."""
         if isinstance(coin, str):
             coin = [coin]
 
-        market_caps = []
-        for c in coin:
-            symbol = c.upper() + "USDT"
-            try:
-                ticker = self._client.get_ticker(symbol=symbol)
-                price = float(ticker['lastPrice'])
-                volume = float(ticker['quoteVolume']) / price  # base volume
-                market_caps.append(round(price * volume, 2))
-            except:
-                market_caps.append(0.0)
+        params = {
+            "symbol": ",".join(coin),
+        }
+
+        response = requests.get(self.coinbase_url, headers=self.coinbase_headers, params=params)
+        data = response.json()
+
+        if response.status_code != 200 or "data" not in data:
+            raise Exception(f"Failed to fetch data: {data.get('status', {}).get('error_message', 'Unknown error')}")
+
+        market_caps = [data["data"][symbol]["quote"]["USD"]["market_cap"] for symbol in coin]
+
         return market_caps[0] if len(market_caps) == 1 else market_caps
 
     def get_fear_and_greed_index(self) -> float:
@@ -181,3 +203,14 @@ class BinanceManager:
                 if t["symbol"] == "BTCUSDT":
                     btc_volume = vol
         return round((btc_volume / total_volume) * 100, 2) if total_volume > 0 else 0.0
+
+    def get_total_crypto_market_cap(self) -> float:
+        """
+        Returns:
+            float: total market cap of crypto
+        """
+        url = "https://api.coingecko.com/api/v3/global"
+        response = requests.get(url)
+        data = response.json()
+        total_market_cap = data['data']['total_market_cap']['usd']
+        return total_market_cap
