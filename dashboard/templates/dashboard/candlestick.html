@@ -20,8 +20,8 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: 0.2fr 1fr 1fr;
+      grid-template-columns: 5fr;
+      grid-template-rows: 0.2fr 2fr;
       gap: 20px;
       height: 100%;
       width: 100%;
@@ -49,29 +49,9 @@
       grid-template-columns: 1fr 5fr 1fr;
     }
 
-    #fear-and-greed {
-      grid-column: 2 / 3;
-      grid-row: 3 / 4;
-    }
-
-    #bitcoin-dominance {
-      grid-column: 3 / 4;
-      grid-row: 3 / 4;
-    }
-
-    #volume {
+    #candlestick {
       grid-column: 1 / 2;
       grid-row: 2 / 3;
-    }
-
-    #market-cap {
-      grid-column: 2 / 4;
-      grid-row: 2 / 3;
-    }
-
-    #table {
-      grid-column: 1 / 2;
-      grid-row: 3 / 4;
     }
 
     .plot {
@@ -104,38 +84,20 @@
   <div class="grid">
     <div class="cell" id="title">
       <div style="grid-column: 1 / 2;">
-        <a href="{% url 'candlestick' %}" style="text-decoration: none;">
+        <a href="{% url 'dashboard' %}" style="text-decoration: none;">
           <div class="button">
-            Candlestick
+            Dashboard
           </div>
         </a>
       </div>
       <div style="grid-column: 2 / 3; text-align: center;">
-        Dashboard
+        Candlestick
       </div>
     </div>
-    <div class="cell" id="fear-and-greed">
-      <div class="{% plotly_class name='FearAndGreed' %} card plot">
-        {% plotly_app name='FearAndGreed' ratio=0.45 %}
-      </div>
-    </div>
-    <div class="cell" id="bitcoin-dominance">
-      <div class="{% plotly_class name='BitcoinDominance' %} card plot">
-        {% plotly_app name='BitcoinDominance' ratio=0.45 %}
-      </div>
-    </div>
-    <div class="cell" id="volume">
-      <div class="{% plotly_class name='Volume' %} card plot">
-        {% plotly_app name='Volume' ratio=0.45 %}
-      </div>
-    </div>
-    <div class="cell" id="market-cap">
+    <div class="cell" id="candlestick">
       <div class="{% plotly_class name='MarketCap' %} card plot">
-        {% plotly_app name='MarketCap' ratio=0.45 %}
+        {% plotly_app name='Candlestick' ratio=0.45 %}
       </div>
-    </div>
-    <div class="cell" id="table">
-      table
     </div>
   </div>
 

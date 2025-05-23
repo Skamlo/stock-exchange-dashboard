@@ -4,4 +4,6 @@ from dashboard.dash_apps.finished_apps import fear_greed_chart, bitcoin_dominanc
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
+    path('candlestick/', views.candlestick, name='candlestick'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]
