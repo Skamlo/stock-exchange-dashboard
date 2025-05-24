@@ -10,3 +10,4 @@ class DashboardConfig(AppConfig):
         import dashboard.dash_apps.finished_apps.fear_greed_chart
         import dashboard.dash_apps.finished_apps.market_cap
         import dashboard.dash_apps.finished_apps.volume
+        import dashboard.dash_apps.finished_apps.table

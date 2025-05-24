@@ -3,6 +3,7 @@ from typing import List, Union
 import requests
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 load_dotenv()
 
@@ -214,3 +215,11 @@ class CryptoManager:
         data = response.json()
         total_market_cap = data['data']['total_market_cap']['usd']
         return total_market_cap
+    
+    def get_dataframe(self):
+        df = pd.DataFrame({
+            "Name": ["BTC", "ETH", "XRP"],
+            "Price": [100, 10, 1],
+            "Volume": [10, 25, 30]
+        })
+        return df
