@@ -22,7 +22,6 @@
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
       grid-template-rows: 0.2fr 1fr 1fr;
-      gap: 20px;
       height: 100%;
       width: 100%;
       padding: 10px;
@@ -46,32 +45,43 @@
       box-shadow: 0 0 0;
       font-size: 2.5em;
       display: grid;
-      grid-template-columns: 1fr 5fr 1fr;
+      grid-template-columns: 2fr 3fr 2fr;
     }
 
     #fear-and-greed {
       grid-column: 2 / 3;
       grid-row: 3 / 4;
+      margin-left: 10px;
+      margin-top: 10px;
+      margin-right: 10px;
     }
 
     #bitcoin-dominance {
       grid-column: 3 / 4;
       grid-row: 3 / 4;
+      margin-left: 10px;
+      margin-top: 10px;
     }
 
     #volume {
       grid-column: 1 / 2;
       grid-row: 2 / 3;
+      margin-right: 10px;
+      margin-bottom: 10px;
     }
 
     #market-cap {
       grid-column: 2 / 4;
       grid-row: 2 / 3;
+      margin-left: 10px;
+      margin-bottom: 10px;
     }
 
     #table {
       grid-column: 1 / 2;
       grid-row: 3 / 4;
+      margin-right: 10px;
+      margin-top: 10px;
     }
 
     .plot {
@@ -98,20 +108,36 @@
     .button:hover {
       background-color: #ebebeb;
     }
+
+    .logo {
+      text-align: right;
+    }
+
+    .logo img {
+      height: 45px;
+    }
   </style>
 </head>
 <body>
   <div class="grid">
     <div class="cell" id="title">
-      <div style="grid-column: 1 / 2;">
+      <div style="grid-column: 1 / 2; display: flex;">
         <a href="{% url 'candlestick' %}" style="text-decoration: none;">
           <div class="button">
             Candlestick
           </div>
         </a>
+        <a href="{% url 'about' %}" style="text-decoration: none; margin-left: 10px;">
+          <div class="button">
+            About
+          </div>
+        </a>
       </div>
       <div style="grid-column: 2 / 3; text-align: center;">
         Dashboard
+      </div>
+      <div style="grid-column: 3 / 4" class="logo">
+        <img src="{% static 'imgs/logo.svg' %}" alt="Logo">
       </div>
     </div>
     <div class="cell" id="fear-and-greed">
