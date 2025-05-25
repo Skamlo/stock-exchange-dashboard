@@ -8,30 +8,33 @@ manager = CryptoManager()
 coins = manager.get_top_n_coin_volumes()
 symbols = [coin['symbol'] for coin in coins]
 volumes = [coin['volume'] for coin in coins]
-# Optional external CSS
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-# Register the Dash app with Django
 app = DjangoDash('Volume', external_stylesheets=external_stylesheets)
 
-
 app.layout = html.Div([
-    html.H3("Volume of Top Cryptocurrencies"),
-    dcc.Graph(
-        id='market-cap-bar',
-        figure={
-            'data': [
-                go.Bar(
-                    x=symbols,
-                    y=volumes,
-                    marker_color='blue'
+    html.Div(
+        dcc.Graph(
+            id='market-cap-bar',
+            figure={
+                'data': [
+                    go.Bar(
+                        x=symbols,
+                        y=volumes,
+                        marker_color='blue'
+                    )
+                ],
+                'layout': go.Layout(
+                    title='Volume by Coin',
+                    xaxis={'title': 'Coin'},
+                    yaxis={'title': 'Volume', 'type': 'linear'},
+                    height=300,
+                    width=650,
                 )
-            ],
-            'layout': go.Layout(
-                title='Volume by Coin',
-                xaxis={'title': 'Coin'},
-                yaxis={'title': 'Volume', 'type': 'linear'}
-            )
-        }
-    ),
+            },
+            style={'display': 'inline-block'}
+        ),
+        style={'textAlign': 'center'}
+    )
 ])
