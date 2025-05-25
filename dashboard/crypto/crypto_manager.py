@@ -4,6 +4,7 @@ import requests
 from dotenv import load_dotenv
 import os
 import pandas as pd
+from datetime import datetime
 
 load_dotenv()
 
@@ -129,17 +130,33 @@ class CryptoManager:
 
         return market_caps[0] if len(market_caps) == 1 else market_caps
 
-    def get_fear_and_greed_index(self) -> float:
+    def get_fear_and_greed_index(self, date: str = None) -> float:
         """
-        Gets the current Fear & Greed Index from alternative.me (external source).
+        Gets the Fear & Greed Index from alternative.me.
+        Optionally filters by a given date (format: 'YYYY-MM-DD').
+
+        Args:
+            date (str, optional): Date to filter for. Defaults to None.
 
         Returns:
-            float: Fear & Greed Index value
+            float: Fear & Greed Index value or -1.0 on failure.
         """
-        url = "https://api.alternative.me/fng/"
+        url = "https://api.alternative.me/fng/?limit=100"  # max 100 entries
         response = requests.get(url)
-        if response.ok:
-            return float(response.json()['data'][0]['value'])
+
+        if not response.ok:
+            return -1.0
+
+        data = response.json().get('data', [])
+
+        if not date:
+            return float(data[0]['value']) if data else -1.0
+
+        for entry in data:
+            entry_date = datetime.utcfromtimestamp(int(entry['timestamp'])).strftime('%Y-%m-%d')
+            if entry_date == date:
+                return float(entry['value'])
+
         return -1.0
 
     def get_coin_trading_volume(self, coin: str) -> float:
@@ -187,23 +204,24 @@ class CryptoManager:
             print(f"Error fetching top volumes: {e}")
             return []
 
-    def get_bitcoin_dominance(self) -> float:
+
+    def get_dominance(self, coin) -> float:
         """
-        Estimates Bitcoin dominance based on USDT volume (Binance approximation).
+        Estimates Crypto coin dominance based on USDT volume (Binance approximation).
 
         Returns:
-            float: bitcoin dominance in %
+            float: coin dominance in %
         """
         tickers = self._client.get_ticker()
-        btc_volume = 0
+        coin_volume = 0
         total_volume = 0
         for t in tickers:
             if t["symbol"].endswith("USDT"):
                 vol = float(t["quoteVolume"])
                 total_volume += vol
-                if t["symbol"] == "BTCUSDT":
-                    btc_volume = vol
-        return round((btc_volume / total_volume) * 100, 2) if total_volume > 0 else 0.0
+                if t["symbol"] == coin + "USDT":
+                    coin_volume = vol
+        return round((coin_volume / total_volume) * 100, 2) if total_volume > 0 else 0.0
 
     def get_total_crypto_market_cap(self) -> float:
         """
@@ -216,10 +234,38 @@ class CryptoManager:
         total_market_cap = data['data']['total_market_cap']['usd']
         return total_market_cap
     
-    def get_dataframe(self):
-        df = pd.DataFrame({
-            "Name": ["BTC", "ETH", "XRP"],
-            "Price": [100, 10, 1],
-            "Volume": [10, 25, 30]
-        })
+    def get_dataframe(self) -> pd.DataFrame:
+        coins = self.get_selected_coins()
+        data = []
+
+        try:
+            market_caps = self.get_coin_market_cap(coins)
+            if isinstance(market_caps, float):
+                market_caps = [market_caps]
+        except Exception as e:
+            print(f"Error fetching market caps: {e}")
+            market_caps = [None] * len(coins)
+
+        for idx, coin in enumerate(coins):
+            symbol = coin.upper() + "USDT"
+            price = None
+            volume = None
+
+            try:
+                ticker = self._client.get_ticker(symbol=symbol)
+                price = float(ticker["lastPrice"])
+                volume = float(ticker["quoteVolume"])
+            except Exception as e:
+                print(f"Error fetching ticker for {symbol}: {e}")
+
+            market_cap = market_caps[idx] if idx < len(market_caps) else None
+
+            data.append({
+                "Coin": coin,
+                "Price": price,
+                "Volume": volume,
+                "MarketCap": market_cap,
+            })
+
+        df = pd.DataFrame(data)
         return df
