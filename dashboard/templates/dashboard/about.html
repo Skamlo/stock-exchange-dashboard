@@ -1,0 +1,131 @@
+{% load static %}
+{% load plotly_dash %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 5fr;
+      grid-template-rows: 0.2fr 2fr;
+      height: 100%;
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #222;
+      text-align: center;
+    }
+
+    p {
+      line-height: 1.6;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .authors {
+      font-style: italic;
+      color: #555;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    #title {
+      grid-row: 1 / 2;
+      box-shadow: 0 0 0;
+      font-size: 2.5em;
+      display: grid;
+      grid-template-columns: 2fr 3fr 2fr;
+    }
+
+    .button {
+      width: 120px;
+      height: 25px;
+      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      align-items: center;
+      justify-content: center;
+      font-size: 0.5em;
+      font-weight: bold;
+      text-decoration: none;
+      text-align: center;
+      color: black;
+      padding: 10px;
+    }
+
+    .button:hover {
+      background-color: #ebebeb;
+    }
+
+    .logo {
+      text-align: right;
+    }
+
+    .logo img {
+      height: 45px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div style="grid-row: 1 / 2;" id="title">
+      <div style="display: flex;">
+        <a href="{% url 'dashboard' %}" style="text-decoration: none;">
+          <div class="button">
+            Dashboard
+          </div>
+        </a>
+        <a href="{% url 'candlestick' %}" style="text-decoration: none; margin-left: 10px;">
+          <div class="button">
+            Candlestick
+          </div>
+        </a>
+      </div>
+      <div></div>
+      <div style="grid-column: 3 / 4" class="logo">
+        <img src="{% static 'imgs/logo.svg' %}" alt="Logo">
+      </div>
+    </div>
+    <div style="grid-row: 2 / 3;">
+      <div class="container">
+        <h1>About This Dashboard</h1>
+        <p>
+          This interactive cryptocurrency analysis dashboard provides a comprehensive overview of the current trends and performance of leading digital assets. It features real-time data visualization tools including volume bar charts, market capitalization pie charts, price data tables, dominance gauges, and interactive candlestick charts.
+        </p>
+        <p>
+          Users can analyze trading volumes, compare market caps, and monitor BTC dominance over time. The candlestick chart allows for in-depth price trend analysis across customizable time intervals, making it ideal for both casual observers and active traders. With responsive charts built using Plotly.js and integrated filters for dynamic interaction, this dashboard offers a user-friendly and data-rich environment for understanding the crypto market.
+        </p>
+        <div class="authors">
+          Created by Maksymilian Norkiewicz and Kacper Kuźnik
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -22,7 +22,6 @@
       display: grid;
       grid-template-columns: 5fr;
       grid-template-rows: 0.2fr 2fr;
-      gap: 20px;
       height: 100%;
       width: 100%;
       padding: 10px;
@@ -46,7 +45,7 @@
       box-shadow: 0 0 0;
       font-size: 2.5em;
       display: grid;
-      grid-template-columns: 1fr 5fr 1fr;
+      grid-template-columns: 2fr 3fr 2fr;
     }
 
     #candlestick {
@@ -78,20 +77,36 @@
     .button:hover {
       background-color: #ebebeb;
     }
+
+    .logo {
+      text-align: right;
+    }
+
+    .logo img {
+      height: 45px;
+    }
   </style>
 </head>
 <body>
   <div class="grid">
     <div class="cell" id="title">
-      <div style="grid-column: 1 / 2;">
+      <div style="grid-column: 1 / 2; display: flex;">
         <a href="{% url 'dashboard' %}" style="text-decoration: none;">
           <div class="button">
             Dashboard
           </div>
         </a>
+        <a href="{% url 'about' %}" style="text-decoration: none; margin-left: 10px;">
+          <div class="button">
+            About
+          </div>
+        </a>
       </div>
       <div style="grid-column: 2 / 3; text-align: center;">
         Candlestick
+      </div>
+      <div style="grid-column: 3 / 4" class="logo">
+        <img src="{% static 'imgs/logo.svg' %}" alt="Logo">
       </div>
     </div>
     <div class="cell" id="candlestick">
