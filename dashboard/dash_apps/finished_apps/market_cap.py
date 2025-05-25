@@ -3,7 +3,6 @@ from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 from django_plotly_dash import DjangoDash
 from crypto_manager import CryptoManager
-
 import plotly.express as px
 
 manager = CryptoManager()
@@ -14,31 +13,36 @@ market_cap = manager.get_coin_market_cap(selected_coins)
 selected_coins.append("Other")
 market_cap.append(total_market_cap - sum(market_cap))
 
-
-# Optional external CSS
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-# Register the Dash app with Django
 app = DjangoDash('MarketCap', external_stylesheets=external_stylesheets)
 
-
-
 app.layout = html.Div([
-    html.H3("Market Caps of Selected Cryptocurrencies"),
-    dcc.Graph(
-        id='market-cap-pie',
-        figure={
-            'data': [
-                go.Pie(
-                    labels=selected_coins,
-                    values=market_cap,
-                    marker=dict(colors=px.colors.qualitative.Plotly)
+    html.Div(
+        dcc.Graph(
+            id='market-cap-pie',
+            figure={
+                'data': [
+                    go.Pie(
+                        labels=selected_coins,
+                        values=market_cap,
+                        marker=dict(colors=px.colors.qualitative.Plotly),
+                        textinfo='label+percent'
+                    )
+                ],
+                'layout': go.Layout(
+                    title={
+                        'text': f'Market Cap Distribution by Coin<br>Total Market Cap: ${total_market_cap:,.2f}',
+                        'x': 0.5,
+                        'xanchor': 'center'
+                    },
+                    height=300,
+                    width=400,
+                    margin=dict(l=30, r=30, t=50, b=30)
                 )
-            ],
-            'layout': go.Layout(
-                title='Market Cap Distribution by Coin'
-            )
-        }
-    ),
-    html.Div(f"Total Market Cap: ${total_market_cap:,.2f}", style={'fontSize': 20, 'marginTop': 20})
+            },
+            style={'display': 'inline-block'}
+        ),
+        style={'textAlign': 'center'}
+    )
 ])
