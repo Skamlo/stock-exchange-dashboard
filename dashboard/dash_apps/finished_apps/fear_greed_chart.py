@@ -14,7 +14,14 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = DjangoDash('FearAndGreed', external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(
-    style={'display': 'flex', 'flexDirection': 'column', 'justifyContent': 'center', 'alignItems': 'center', 'height': '100vh', 'backgroundColor': '#f9f9f9'},
+    style={
+        'display': 'flex',
+        'flexDirection':'column',
+        'justifyContent': 'center',
+        'alignItems': 'center',
+        'height': '100vh',
+        'backgroundColor': 'white'
+    },
     children=[
         dcc.DatePickerSingle(
             id='date-picker',
@@ -24,7 +31,11 @@ app.layout = html.Div(
             display_format='YYYY-MM-DD',
             style={'marginBottom': '30px'}
         ),
-        dcc.Graph(id='fear-greed-graph', config={'displayModeBar': False})
+        dcc.Graph(
+            id='fear-greed-graph',
+            config={'displayModeBar': False},
+            style={'width': '350px', 'height': '225px'}
+        )
     ]
 )
 
@@ -59,6 +70,6 @@ def update_gauge(selected_date):
     )
     figure.update_layout(
         margin=dict(l=20, r=20, t=20, b=20),
-        paper_bgcolor="#f9f9f9"
+        paper_bgcolor="white"
     )
     return figure
