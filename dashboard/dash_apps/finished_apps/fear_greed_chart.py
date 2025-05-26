@@ -23,6 +23,7 @@ app.layout = html.Div(
         'backgroundColor': 'white'
     },
     children=[
+        html.H3("Fear & Greed index"),
         dcc.DatePickerSingle(
             id='date-picker',
             min_date_allowed=datetime.date(2018, 2, 1),
